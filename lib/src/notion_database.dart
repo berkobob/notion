@@ -2,17 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:notion/src/notion_exception.dart';
 
+import 'notion_exception.dart';
 import 'models/notion.dart';
+import 'models/project.dart';
 
 class NotionDB {
   final _token = Platform.environment['TOKEN'];
   final _database = Platform.environment['DATABASE'];
+  final _projects = Platform.environment['PROJECTS'];
   final _url = 'https://api.notion.com/v1';
-
-  String? get token => _token;
-  String? get database => _database;
 
   Map<String, String> get headers => {
         "Authorization": "Bearer $_token",
@@ -73,6 +72,28 @@ class NotionDB {
     final response = await http.post(uri, headers: headers, body: body);
     if (response.statusCode != 200) throw NotionException(response);
     return Notion.fromJson(jsonDecode(response.body));
+  }
+
+  /// Return a list of COIs & Projects as [Project]s
+  Future<List<Project>> getProjects() async {
+    final uri = Uri.parse('$_url/databases/$_projects/query');
+    final response = await http.post(uri, headers: headers);
+    if (response.statusCode != 200) throw NotionException(response);
+    final results = jsonDecode(response.body);
+    final projects = results['results'].map<Project>((project) {
+      final name = project['properties']['Name']['title'][0]['text']['content'];
+      late final Tag tag;
+      switch (project['properties']['Tags']['select']['id']) {
+        case 'bf338f9a-c2b6-4275-9d00-3d83fadf5021':
+          tag = Tag.catergory;
+          break;
+        case '3acaaf93-8453-47ea-8f66-6fc10e55f3b8':
+          tag = Tag.project;
+          break;
+      }
+      return Project(id: project['id'], name: name, tag: tag);
+    }).toList();
+    return projects;
   }
 
   Map<String, dynamic> _properties(Notion notion) => {

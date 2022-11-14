@@ -13,8 +13,10 @@ void main() async {
   // todo = notions.last;
   // print('Delete $todo');
   // notion.deleteNotion(todo);
-  final todo = Notion(task: "I am creating this task");
-  final result = await notion.createNotion(todo);
-  print(todo);
-  print(result);
+  // final todo = Notion(task: "I am creating this task");
+  // final result = await notion.createNotion(todo);
+  // print(todo);
+  // print(result);
+  final results = await notion.getProjects();
+  results.forEach(print);
 }
