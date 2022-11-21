@@ -3,7 +3,8 @@ import 'package:notion/notion.dart';
 void main() async {
   var notion = NotionDB();
   // print(await notion.hasAccess());
-  // final notions = await notion.getNotions();
+  final notions = await notion.getNotions();
+  notions.forEach(print);
   // Notion todo = notions.first;
   // print(todo);
   // todo.status = 'This is new';
@@ -17,6 +18,6 @@ void main() async {
   // final result = await notion.createNotion(todo);
   // print(todo);
   // print(result);
-  final results = await notion.getProjects();
-  results.forEach(print);
+  // final results = notion.getProjects.listen(print);
+  // print(await notion.getProjects());
 }
