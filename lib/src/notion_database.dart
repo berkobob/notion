@@ -7,11 +7,12 @@ import 'package:http/http.dart' as http;
 import 'notion_exception.dart';
 import 'models/notion.dart';
 import 'models/project.dart';
+import '../secrets.dart';
 
 class NotionDB {
-  final _token = Platform.environment['TOKEN'];
-  final _database = Platform.environment['DATABASE'];
-  final _projectsdb = Platform.environment['PROJECTS'];
+  final _token = Platform.environment['TOKEN'] ?? env['TOKEN'];
+  final _database = Platform.environment['DATABASE'] ?? env['DATABASE'];
+  final _projectsdb = Platform.environment['PROJECTS'] ?? env['PROJECTS'];
   final _url = 'https://api.notion.com/v1';
 
   Map<String, Project>? _projects;
