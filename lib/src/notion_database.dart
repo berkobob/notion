@@ -69,9 +69,9 @@ class NotionDB {
     if (response.statusCode != 200) throw NotionException(response);
   }
 
-  /// Delete a [Notion]
-  Future deleteNotion(Notion notion) async {
-    final uri = Uri.parse('$_url/blocks/${notion.id}');
+  /// Delete a [Notion] given its ID
+  Future deleteNotion(String id) async {
+    final uri = Uri.parse('$_url/blocks/$id');
     final response = await http.delete(uri, headers: headers);
     if (response.statusCode != 200) throw NotionException(response);
   }
@@ -98,6 +98,29 @@ class NotionDB {
     return _projects;
   }
 
+  /// Add [String] note to [Notion]
+  Future<void> addNote(Notion notion, String note) async {
+    print(notion.id);
+    final uri = Uri.parse('$_url/blocks/${notion.id}/children');
+    print(uri.toString());
+    final body = jsonEncode({
+      "children": [
+        {
+          "paragraph": {
+            "rich_text": [
+              {
+                "type": "text",
+                "text": {"content": note}
+              }
+            ]
+          }
+        }
+      ]
+    });
+    final response = await http.patch(uri, headers: headers, body: body);
+    if (response.statusCode != 200) throw NotionException(response);
+  }
+
   Map<String, dynamic> _properties(Notion notion) => {
         "properties": {
           "Task": {
@@ -110,6 +133,12 @@ class NotionDB {
           if (notion.status != null)
             "Status": {
               "select": {"name": notion.status}
+            },
+          if (notion.project != null)
+            "Project": {
+              "relation": [
+                {"id": notion.project!.id}
+              ]
             }
         }
       };

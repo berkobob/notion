@@ -1,10 +1,13 @@
 import 'package:notion/notion.dart';
 
 void main() async {
-  var notion = NotionDB();
+  var notiondb = NotionDB();
   // print(await notion.hasAccess());
-  final notions = await notion.getNotions();
-  notions.forEach(print);
+  final notions = await notiondb.getNotions();
+  final notion = notions[0];
+  print(notion);
+  notiondb.addNote(notion, "Testing time");
+
   // Notion todo = notions.first;
   // print(todo);
   // todo.status = 'This is new';
