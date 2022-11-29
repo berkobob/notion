@@ -12,8 +12,10 @@ class Notion {
   Notion.fromJson(Map<String, dynamic> json, {this.project})
       : id = json["id"],
         task = json["properties"]["Task"]['title'].first['text']['content'],
+        status = json["properties"]["Status"]["select"]["name"],
         url = json["url"];
 
   @override
-  String toString() => '$task\t$project\t$status\t$url';
+  String toString() =>
+      'Task: $task\tProject: $project\tStatus: $status\tUrk: $url';
 }

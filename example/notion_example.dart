@@ -4,9 +4,10 @@ void main() async {
   var notiondb = NotionDB();
   // print(await notion.hasAccess());
   final notions = await notiondb.getNotions();
-  final notion = notions[0];
-  print(notion);
-  notiondb.addNote(notion, "Testing time");
+  notions.forEach(print);
+  // final notion = notions[0];
+  // print(notion);
+  // notiondb.addNote(notion, "Testing time");
 
   // Notion todo = notions.first;
   // print(todo);
