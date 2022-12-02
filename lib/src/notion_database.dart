@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 import 'notion_exception.dart';
 import 'models/notion.dart';
@@ -14,6 +15,7 @@ class NotionDB {
   final _database = Platform.environment['DATABASE'] ?? env['DATABASE'];
   final _projectsdb = Platform.environment['PROJECTS'] ?? env['PROJECTS'];
   final _url = 'https://api.notion.com/v1';
+  final _log = Logger();
 
   Map<String, Project>? _projects;
 
@@ -35,9 +37,9 @@ class NotionDB {
 
     if (response.statusCode == 200) return true;
 
-    print('Response code: ${response.statusCode}');
-    print('${response.reasonPhrase}');
-    print(jsonDecode(response.body));
+    _log.d('Response code: ${response.statusCode}');
+    _log.d('${response.reasonPhrase}');
+    _log.d(jsonDecode(response.body));
     return false;
   }
 
@@ -100,9 +102,9 @@ class NotionDB {
 
   /// Add [String] note to [Notion]
   Future<void> addNote(Notion notion, String note) async {
-    print(notion.id);
+    _log.d(notion.id.toString());
     final uri = Uri.parse('$_url/blocks/${notion.id}/children');
-    print(uri.toString());
+    _log.d(uri.toString());
     final body = jsonEncode({
       "children": [
         {

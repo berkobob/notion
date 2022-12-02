@@ -1,10 +1,14 @@
+import 'package:logger/logger.dart';
 import 'package:notion/notion.dart';
 
 void main() async {
+  final log = Logger()..registerPrinter(printer);
   var notiondb = NotionDB();
   // print(await notion.hasAccess());
   final notions = await notiondb.getNotions();
-  notions.forEach(print);
+  for (var n in notions) {
+    log.i(n.toString());
+  }
   // final notion = notions[0];
   // print(notion);
   // notiondb.addNote(notion, "Testing time");
