@@ -7,3 +7,6 @@
   
 ## 1.0.2
 - Add Logger() for logging
+
+## 1.0.3
+- Allow empty Status field
