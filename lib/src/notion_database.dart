@@ -11,11 +11,25 @@ import 'models/project.dart';
 import '../secrets.dart';
 
 class NotionDB {
-  final _token = Platform.environment['TOKEN'] ?? env['TOKEN'];
-  final _database = Platform.environment['DATABASE'] ?? env['DATABASE'];
-  final _projectsdb = Platform.environment['PROJECTS'] ?? env['PROJECTS'];
+  // final _token = Platform.environment['TOKEN'] ?? env['TOKEN'];
+  // final _database = Platform.environment['DATABASE'] ?? env['DATABASE'];
+  // final _projectsdb = Platform.environment['PROJECTS'] ?? env['PROJECTS'];
   final _url = 'https://api.notion.com/v1';
   final _log = Logger();
+
+  final String? _token;
+  final String? _database;
+  final String? _projectsdb;
+
+  NotionDB([Map<String, String> settings = const {}])
+      : _token =
+            settings['TOKEN'] ?? Platform.environment['TOKEN'] ?? env['TOKEN'],
+        _database = settings['DATABASE'] ??
+            Platform.environment['DATABASE'] ??
+            env['DATABASE'],
+        _projectsdb = settings['PROJECTS'] ??
+            Platform.environment['PROJECTS'] ??
+            env['PROJECTS'];
 
   Map<String, Project>? _projects;
 
