@@ -1,9 +1,10 @@
 import 'package:logger/logger.dart';
 import 'package:notion/notion.dart';
+import '../secrets.dart';
 
 void main() async {
   final log = Logger()..registerPrinter(printer);
-  var notiondb = NotionDB();
+  var notiondb = NotionDB(env);
   // print(await notion.hasAccess());
   final notions = await notiondb.getNotions();
   for (var n in notions) {
