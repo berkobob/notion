@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -10,10 +9,19 @@ import 'models/notion.dart';
 import 'models/project.dart';
 
 class NotionDB {
+  late final String _token;
+  late final String _database;
+  late final String _projectsdb;
+
+  NotionDB(Map json) {
+    _token = json['TOKEN'];
+    _database = json['DATABASE'];
+    _projectsdb = json['PROJECTS'];
+  }
+
   final _url = 'https://api.notion.com/v1';
   final _log = Logger();
-
-  Map<String, Project>? _projects;
+  List<Project> _projects = [];
 
   Project? getProject(String id) => _projects.firstWhere((p) => p.id == id);
 
