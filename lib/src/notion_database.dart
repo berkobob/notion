@@ -33,9 +33,6 @@ class NotionDB {
 
   /// Whether access is available to the Notion API
   Future<bool> hasAccess() async {
-    if (_token == null) throw 'Missing Notion Bearer token';
-    if (_database == null) throw 'Missing Notion database ID';
-
     final response = await http.get(Uri.parse('$_url/databases/$_database'),
         headers: headers);
 
