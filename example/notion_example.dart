@@ -9,6 +9,11 @@ void main() async {
   for (var n in notions) {
     log.i(n.toString());
   }
+
+  final projects = await notiondb.getProjects();
+  for (var p in projects) {
+    print('$p');
+  }
   // final notion = notions[0];
   // print(notion);
   // notiondb.addNote(notion, "Testing time");

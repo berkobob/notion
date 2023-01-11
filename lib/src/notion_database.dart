@@ -17,9 +17,9 @@ class NotionDB {
   final _url = 'https://api.notion.com/v1';
   final _log = Logger();
 
-  Map<String, Project>? _projects;
+  List<Project> _projects = [];
 
-  Project? getProject(String id) => _projects?[id];
+  Project? getProject(String id) => _projects.firstWhere((p) => p.id == id);
 
   Map<String, String> get headers => {
         "Authorization": "Bearer $_token",
@@ -51,13 +51,13 @@ class NotionDB {
     if (response.statusCode != 200) throw NotionException(response);
 
     final results = jsonDecode(response.body)['results'];
-    if (_projects == null) await getProjects();
-    assert(_projects != null);
+    if (_projects.isEmpty) await getProjects();
+    assert(_projects.isNotEmpty);
     return results.map<Notion>((result) {
       Project? project;
       final relations = result["properties"]["Project"]["relation"];
       if (relations.isNotEmpty) {
-        project = _projects![relations[0]["id"]];
+        project = getProject(relations[0]["id"] as String);
       }
       return Notion.fromJson(result, project: project);
     }).toList();
@@ -90,13 +90,13 @@ class NotionDB {
   }
 
   /// Return a list of COIs & Projects as [Project]s
-  Future<Map<String, Project>?> getProjects() async {
+  Future<List<Project>> getProjects() async {
     final uri = Uri.parse('$_url/databases/$_projectsdb/query');
     final response = await http.post(uri, headers: headers);
     if (response.statusCode != 200) throw NotionException(response);
-    final projects = jsonDecode(response.body)["results"]
-        .map<Project>((project) => Project.fromJson(project));
-    _projects = {for (var proj in projects) proj.id: proj};
+    _projects = jsonDecode(response.body)["results"]
+        .map<Project>((project) => Project.fromJson(project))
+        .toList();
     return _projects;
   }
 

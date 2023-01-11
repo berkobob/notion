@@ -14,7 +14,7 @@ class Project {
             : Tag.project;
 
   @override
-  String toString() => 'Proj Name: $name\t$tag';
+  String toString() => 'Proj Name: $name\t$tag\tID: $id';
 }
 
 enum Tag { catergory, project, list }

@@ -1,6 +1,6 @@
 name: notion
 description: A starting point for Dart libraries or applications.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/berkobob/notion
 publish_to: none
 
@@ -14,4 +14,6 @@ dev_dependencies:
 dependencies:
   http: ^0.13.5
   logger:
-    path: ../logger
+    git:
+      url: https://github.com/berkobob/logger
+      ref: main
