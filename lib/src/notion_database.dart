@@ -8,16 +8,12 @@ import 'package:logger/logger.dart';
 import 'notion_exception.dart';
 import 'models/notion.dart';
 import 'models/project.dart';
-import '../secrets.dart';
 
 class NotionDB {
-  final _token = Platform.environment['TOKEN'] ?? env['TOKEN'];
-  final _database = Platform.environment['DATABASE'] ?? env['DATABASE'];
-  final _projectsdb = Platform.environment['PROJECTS'] ?? env['PROJECTS'];
   final _url = 'https://api.notion.com/v1';
   final _log = Logger();
 
-  List<Project> _projects = [];
+  Map<String, Project>? _projects;
 
   Project? getProject(String id) => _projects.firstWhere((p) => p.id == id);
 
